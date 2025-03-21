@@ -116,4 +116,72 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Full citation information would appear here.');
         });
     });
+    
+    // Update current section in header
+    updateCurrentSection();
+    
+    // Setup section navigation
+    setupSectionNavigation();
 });
+
+// Function to update the current section title in the header
+function updateCurrentSection() {
+    const sections = document.querySelectorAll('section[id]');
+    const currentSectionTitle = document.getElementById('currentSectionTitle');
+    
+    function updateHeaderSection() {
+        let currentSection = '';
+        let currentSectionHeading = '';
+        
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            // Check if the section is visible in the viewport (with some offset for the header)
+            if (rect.top <= 120 && rect.bottom >= 120) {
+                currentSection = section.id;
+                // Find the heading in this section
+                const heading = section.querySelector('h2, h3');
+                if (heading) {
+                    currentSectionHeading = heading.textContent;
+                }
+            }
+        });
+        
+        if (currentSectionHeading) {
+            currentSectionTitle.textContent = currentSectionHeading;
+        }
+    }
+    
+    window.addEventListener('scroll', updateHeaderSection);
+    updateHeaderSection(); // Initialize with current section
+}
+
+// Function to handle section navigation
+function setupSectionNavigation() {
+    const mainSections = Array.from(document.querySelectorAll('section[id^="part-"], section[id="introduction"]'));
+    const navButtons = document.querySelectorAll('.section-navigation');
+    
+    navButtons.forEach((navButton, index) => {
+        const prevButton = navButton.querySelector('.prev-section');
+        const nextButton = navButton.querySelector('.next-section');
+        
+        prevButton.addEventListener('click', function() {
+            if (index > 0) {
+                const prevSection = mainSections[index - 1];
+                window.scrollTo({
+                    top: prevSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+        
+        nextButton.addEventListener('click', function() {
+            if (index < mainSections.length - 1) {
+                const nextSection = mainSections[index + 1];
+                window.scrollTo({
+                    top: nextSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
