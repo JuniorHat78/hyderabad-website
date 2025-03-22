@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('timelineContainer')) {
         try {
             // Create new timeline instance
-            new StudentDebtTimeline({
+            window.mainTimeline = new StudentDebtTimeline({
                 containerId: 'timelineContainer',
                 dataUrl: 'js/timeline-data.json'
             });
@@ -139,6 +139,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     } else {
         console.warn("Timeline container not found in the DOM");
+    }
+
+    // Also initialize any fullscreen timeline content if it exists
+    if (document.getElementById('fullscreenTimelineContent')) {
+        try {
+            new StudentDebtTimeline({
+                containerId: 'fullscreenTimelineContent',
+                dataUrl: 'js/timeline-data.json'
+            });
+        } catch (error) {
+            console.error("Failed to initialize fullscreen timeline:", error);
+        }
     }
 });
 

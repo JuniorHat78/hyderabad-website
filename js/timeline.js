@@ -56,19 +56,24 @@ class StudentDebtTimeline {
         header.className = 'timeline-header';
         header.innerHTML = `
             <h2>Interactive Student Debt Timeline</h2>
-            <div class="timeline-filters">
-                <label>
-                    <input type="checkbox" data-filter="legislation" ${this.activeFilters.legislation ? 'checked' : ''}> 
-                    <span class="filter-color legislation"></span> Policy & Legislation
-                </label>
-                <label>
-                    <input type="checkbox" data-filter="economic" ${this.activeFilters.economic ? 'checked' : ''}> 
-                    <span class="filter-color economic"></span> Economic Impacts
-                </label>
-                <label>
-                    <input type="checkbox" data-filter="institutional" ${this.activeFilters.institutional ? 'checked' : ''}> 
-                    <span class="filter-color institutional"></span> Institutional Changes
-                </label>
+            <div class="timeline-controls">
+                <button id="timelineFullscreen" class="timeline-fullscreen-btn">
+                    <i class="fas fa-expand"></i> Full Screen
+                </button>
+                <div class="timeline-filters">
+                    <label>
+                        <input type="checkbox" data-filter="legislation" ${this.activeFilters.legislation ? 'checked' : ''}> 
+                        <span class="filter-color legislation"></span> Policy & Legislation
+                    </label>
+                    <label>
+                        <input type="checkbox" data-filter="economic" ${this.activeFilters.economic ? 'checked' : ''}> 
+                        <span class="filter-color economic"></span> Economic Impacts
+                    </label>
+                    <label>
+                        <input type="checkbox" data-filter="institutional" ${this.activeFilters.institutional ? 'checked' : ''}> 
+                        <span class="filter-color institutional"></span> Institutional Changes
+                    </label>
+                </div>
             </div>
         `;
         this.container.appendChild(header);
@@ -191,6 +196,36 @@ class StudentDebtTimeline {
         `;
         this.container.appendChild(chartContainer);
         
+        // Add extra content for full-screen mode
+        if (this.container.classList.contains('timeline-fullscreen')) {
+            const fullscreenExtras = document.createElement('div');
+            fullscreenExtras.className = 'fullscreen-extras';
+            fullscreenExtras.innerHTML = `
+                <div class="fullscreen-sidebar">
+                    <h3>Timeline Highlights</h3>
+                    <ul class="key-events-list">
+                        ${this.events.slice(0, 8).map(event => `
+                            <li>
+                                <span class="event-year">${event.year}</span>
+                                <a href="#" data-event-id="${event.id}" class="event-link-sidebar">${event.title}</a>
+                            </li>
+                        `).join('')}
+                        <li><a href="#" class="show-all-events">View all events →</a></li>
+                    </ul>
+                </div>
+            `;
+            this.container.appendChild(fullscreenExtras);
+
+            // Add event listeners for sidebar links
+            this.container.querySelectorAll('.event-link-sidebar').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const eventId = e.target.getAttribute('data-event-id');
+                    this.showEventDetails(eventId);
+                });
+            });
+        }
+
         // Reattach event listeners after rendering
         this.setupEventListeners();
         
@@ -288,6 +323,52 @@ class StudentDebtTimeline {
                 e.target.classList.add('active');
             });
         });
+
+        // Completely redesigned full-screen toggle functionality
+        const fullscreenBtn = this.container.querySelector('#timelineFullscreen');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', () => {
+                // Create a dedicated full-screen container outside the normal DOM flow
+                const fullscreenContainer = document.createElement('div');
+                fullscreenContainer.className = 'timeline-fullscreen-container';
+                fullscreenContainer.innerHTML = `
+                    <div class="timeline-fullscreen-header">
+                        <h1>The American Student Debt Crisis: Interactive Timeline</h1>
+                        <button class="timeline-exit-btn">
+                            <i class="fas fa-times"></i> Exit Full Screen
+                        </button>
+                    </div>
+                    <div id="fullscreenTimelineContent"></div>
+                `;
+                
+                document.body.appendChild(fullscreenContainer);
+                document.body.classList.add('timeline-modal-open');
+                
+                // Create a new instance of the timeline just for the full-screen view
+                const fullscreenTimeline = new StudentDebtTimeline({
+                    containerId: 'fullscreenTimelineContent',
+                    dataUrl: this.dataUrl
+                });
+                
+                // Setup exit button
+                const exitBtn = fullscreenContainer.querySelector('.timeline-exit-btn');
+                exitBtn.addEventListener('click', () => {
+                    document.body.removeChild(fullscreenContainer);
+                    document.body.classList.remove('timeline-modal-open');
+                });
+                
+                // Handle Escape key
+                const handleEscKey = (e) => {
+                    if (e.key === 'Escape') {
+                        document.body.removeChild(fullscreenContainer);
+                        document.body.classList.remove('timeline-modal-open');
+                        document.removeEventListener('keydown', handleEscKey);
+                    }
+                };
+                
+                document.addEventListener('keydown', handleEscKey);
+            });
+        }
     }
 
     showEventDetails(eventId) {
@@ -325,6 +406,22 @@ class StudentDebtTimeline {
                 setTimeout(() => {
                     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 300);
+            }
+        }
+
+        // If in full-screen mode, add extra emphasis to the selected event
+        if (this.container.classList.contains('timeline-fullscreen') && selectedEvent) {
+            // Add a special highlight class for full-screen mode
+            selectedEvent.classList.add('fullscreen-highlight');
+            
+            // Scroll the timeline wrapper to center the event with more prominence
+            const timelineWrapper = this.container.querySelector('.timeline-wrapper');
+            if (timelineWrapper) {
+                // Add a subtle animation to the timeline to emphasize the selection
+                timelineWrapper.style.transition = 'all 0.5s ease';
+                setTimeout(() => {
+                    timelineWrapper.style.transition = '';
+                }, 500);
             }
         }
     }
