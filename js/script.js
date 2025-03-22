@@ -122,6 +122,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup section navigation
     setupSectionNavigation();
+
+    // Initialize timeline if the container exists
+    if (document.getElementById('timelineContainer')) {
+        try {
+            // Create new timeline instance
+            new StudentDebtTimeline({
+                containerId: 'timelineContainer',
+                dataUrl: 'js/timeline-data.json'
+            });
+            console.log("Timeline initialized successfully");
+        } catch (error) {
+            console.error("Failed to initialize timeline:", error);
+            document.getElementById('timelineContainer').innerHTML = 
+                '<div class="timeline-error"><h3>Timeline Error</h3><p>There was a problem loading the timeline. Please refresh the page to try again.</p></div>';
+        }
+    } else {
+        console.warn("Timeline container not found in the DOM");
+    }
 });
 
 // Function to update the current section title in the header

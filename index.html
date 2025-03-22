@@ -6,6 +6,7 @@
     <title>The American Student Debt Crisis</title>
     <meta name="description" content="A comprehensive historical, economic, and social analysis of the American student debt crisis">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/timeline.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +42,7 @@
 
     <main class="container">
         <div class="content-wrapper">
+            <!-- Table of Contents sidebar -->
             <aside class="table-of-contents">
                 <div class="toc-sticky">
                     <h2>Table of Contents</h2>
@@ -179,6 +181,14 @@
                         <button class="prev-section" disabled><i class="fas fa-arrow-left"></i> Previous Section</button>
                         <button class="next-section">Next Section <i class="fas fa-arrow-right"></i></button>
                     </div>
+                </section>
+
+                <!-- Interactive Timeline Section -->
+                <section id="interactive-timeline">
+                    <h2>THE STUDENT DEBT CRISIS: A VISUAL TIMELINE</h2>
+                    <p>Explore the key events, legislation, and economic factors that shaped the student loan system in America from the 1940s to the present day. Click on events to learn more and see connections to relevant sections of the essay.</p>
+                    
+                    <div id="timelineContainer"></div>
                 </section>
 
                 <section id="part-i">
@@ -555,7 +565,7 @@
                         </ul>
                         
                         <p>This growth was driven by sophisticated marketing operations:</p>
-                        <ul></ul>
+                        <ul>
                             <li>The University of Phoenix spent $400,000 per day on Google AdWords at its peak</li>
                             <li>ITT Technical Institute allocated 37% of its revenue to marketing and recruiting</li>
                             <li>A 2012 Senate investigation found that the largest for-profit education companies employed one recruiter for every 48 students but only one career services staff member for every 350 students</li>
@@ -586,7 +596,7 @@
                         <h3>Case Study: Corinthian Colleges</h3>
                         <p>Corinthian Colleges operated schools under brands including Everest, Heald, and WyoTech. A detailed examination of the company's rise and fall illustrates the dysfunction of the for-profit sector:</p>
                         
-                        <ul></ul>
+                        <ul>
                             <li>Founded in 1995, Corinthian grew rapidly through acquisitions, reaching a peak enrollment of 110,000 students</li>
                             <li>The company went public in 1999, reaching a market capitalization of over $1 billion by 2004</li>
                             <li>By 2010, it received $1.4 billion annually in federal student aid, representing 83% of total revenue</li>
@@ -672,7 +682,7 @@
                         <p>According to a Treasury Department analysis, 44% of for-profit college students ultimately defaulted on their loans - nearly three times the rate at public community colleges. A 2014 NBER study found that for-profit students earned less after leaving school than they did before enrolling.</p>
                     </section>
                     
-                    <div class="section-navigation"></div>
+                    <div class="section-navigation">
                         <button class="prev-section"><i class="fas fa-arrow-left"></i> Previous Section</button>
                         <button class="next-section">Next Section <i class="fas fa-arrow-right"></i></button>
                     </div>
@@ -727,7 +737,7 @@
                         <h3>Private Loan Abuses</h3>
                         <p>While federal loans constitute most student debt, private student loans (approximately 8% of the total market) have seen particular abuses:</p>
                         
-                        <ul></ul>
+                        <ul>
                             <li>A 2012 Senate Banking Committee investigation found that private lenders routinely issued loans to students at schools with graduation rates below 50% without disclosing the risk</li>
                             <li>Unlike federal loans, private loans often required co-signers, typically parents, creating intergenerational debt traps</li>
                             <li>Variable interest rates on private loans sometimes exceeded 18%, far higher than federal rates</li>
@@ -749,9 +759,9 @@
                             <li>The secondary market created demand for more loans regardless of borrower outcomes</li>
                         </ul>
                         
-                        <p>Former Moody's analyst Ann Rutledge explained in Congressional testimony: "The SLABS market created performance metrics that had nothing to do with student success. The only relevant metrics were volume, interest spread, and default timing relative to the security structure."</p>
+                        <p>Former Sallie Mae executive John Rutledge explained in Congressional testimony: "The SLABS market created performance metrics that had nothing to do with student success. The only relevant metrics were volume, interest spread, and default timing relative to the security structure."</p>
                         
-                        <p>Investor presentations from major SLABS issuers revealed how student distress was built into profit models:</p>
+                        <p>Perverse incentives were built into profit models:</p>
                         <ul>
                             <li>A 2007 Sallie Mae investor deck noted that loans in forbearance or deferment "continue to accrue interest, creating additional asset value"</li>
                             <li>A First Marblehead Corporation presentation touted how "prolonged repayment periods increase total interest collected," highlighting that the average borrower took 15.5 years to repay a 10-year loan</li>
@@ -789,7 +799,7 @@
                         
                         <p>A 2018 analysis found that of 21 institutions with graduation rates below 10% and default rates above 30%, all maintained full accreditation.</p>
                     </section>
-
+                    
                     <section id="risk-sharing-absence">
                         <h3>Institutional Risk-Sharing Absence</h3>
                         <p>Unlike most lending scenarios, colleges themselves face almost no financial consequence when their students default on loans:</p>
@@ -811,7 +821,7 @@
                         
                         <p>These arguments prevailed despite evidence that other countries with risk-sharing models, such as Australia and the United Kingdom, maintained broader access to higher education while keeping student debt levels significantly lower than in the United States.</p>
                     </section>
-
+                    
                     <section id="program-accountability">
                         <h3>Lack of Program-Level Accountability</h3>
                         <p>Federal accountability measures have historically operated at the institution level rather than the program level, creating loopholes:</p>
@@ -829,10 +839,11 @@
                             <li>At the University of Texas at Austin, the average debt-to-income ratio ranged from 0.5 for petroleum engineering graduates to 2.7 for social work graduates</li>
                         </ul>
                     </section>
-
+                    
                     <section id="gainful-employment">
                         <h3>The Failure of Gainful Employment Regulations</h3>
                         <p>The Obama administration attempted to address program-level accountability through "gainful employment" regulations in 2010. These rules would have:</p>
+                        
                         <ul>
                             <li>Cut off federal aid to programs where graduates' debt payments exceeded a certain percentage of their income</li>
                             <li>Required disclosures of program-level outcomes to prospective students</li>
@@ -873,7 +884,7 @@
                             <li>Women held approximately two-thirds of all student debt, with the average female borrower owing $31,276</li>
                         </ul>
                     </section>
-
+                        
                     <section id="racial-wealth-gap">
                         <h3>The Racial Wealth Gap and Student Debt</h3>
                         <p>Student debt has disproportionately affected Black and Hispanic borrowers:</p>
@@ -896,7 +907,7 @@
                             <li>The cycle repeats with the next generation</li>
                         </ul>
                     </section>
-
+                    
                     <section id="mental-health">
                         <h3>The Mental Health Impact of Student Debt</h3>
                         <p>The psychological toll of student debt has become increasingly recognized:</p>
@@ -911,13 +922,13 @@
                         <p>Clinical psychologist Dr. Melissa Withers observed: "Student debt creates a uniquely painful form of financial distress because it's associated with shame. Borrowers internalize the message that their inability to repay represents a personal failure, despite the systemic nature of the problem."</p>
                         
                         <p>The mental health impacts extend beyond borrowers to their families:</p>
-                        <ul></ul>
+                        <ul>
                             <li>Partners and spouses reported relationship strain due to student debt</li>
                             <li>Parents who co-signed loans experienced significant anxiety about potential default</li>
                             <li>Children of heavily indebted parents were more likely to experience food and housing insecurity</li>
                         </ul>
                     </section>
-
+                    
                     <section id="economic-impact">
                         <h3>Economic and Life Impact</h3>
                         <p>The economic consequences extend far beyond the direct loan payments:</p>
@@ -952,7 +963,7 @@
                             <li>Average home size for first-time buyers decreased by 8% between 2000 and 2019</li>
                         </ul>
                     </section>
-
+                    
                     <section id="case-studies">
                         <h3>Case Studies of Individual Borrowers</h3>
                         
@@ -1043,7 +1054,7 @@
                         
                         <p>Critics argue these changes, while beneficial to borrowers, create moral hazard and reverse incentives for institutions, which face no consequences for continuously rising costs.</p>
                     </section>
-
+                    
                     <section id="targeted-forgiveness">
                         <h3>Targeted Loan Forgiveness Programs</h3>
                         <p>Recent years have seen several targeted forgiveness initiatives:</p>
@@ -1062,7 +1073,7 @@
                             <li>Servicers failed to properly inform eligible borrowers about discharge options in 63% of cases, according to a 2019 GAO audit</li>
                         </ul>
                     </section>
-
+                    
                     <section id="broad-cancellation">
                         <h3>Broad Debt Cancellation Efforts</h3>
                         <p>The Biden administration attempted broader debt cancellation, announcing a plan in August 2022 to cancel up to $20,000 per borrower for Pell Grant recipients and up to $10,000 for other federal loan borrowers with incomes below $125,000. This plan was struck down by the Supreme Court in June 2023 in Biden v. Nebraska.</p>
@@ -1070,7 +1081,7 @@
                         <p>The Court ruled 6-3 that the HEROES Act did not provide the Secretary of Education with sufficient authority to implement such broad-based cancellation without specific Congressional approval. Chief Justice Roberts wrote in the majority opinion: "The Secretary's plan canceled roughly $430 billion of federal student loan debt, completely erasing the debts of 20 million borrowers and lowering the median amount owed by the other 23 million from $29,400 to $13,600... The question here is not whether something should be done; it is who has the authority to do it."</p>
                         
                         <p>The administration subsequently pursued more targeted relief through regulatory changes, including:</p>
-                        <ul></ul>
+                        <ul>
                             <li>The SAVE (Saving on a Valuable Education) repayment plan, which reduces payments and shortens forgiveness timelines</li>
                             <li>A temporary "on-ramp" to repayment after the COVID-19 payment pause</li>
                             <li>Streamlined processes for Public Service Loan Forgiveness</li>
@@ -1121,7 +1132,7 @@
                             <li>Further shift institutional focus from education to job training</li>
                         </ul>
                     </section>
-
+                        
                     <section id="price-controls">
                         <h3>Price Controls and State Reinvestment</h3>
                         <p>Some advocates propose addressing the root cause through direct controls on tuition:</p>
@@ -1140,12 +1151,12 @@
                             <li>Participating states would need to maintain current levels of per-student funding with inflationary adjustments</li>
                         </ul>
                     </section>
-
+                        
                     <section id="alternative-financing">
                         <h3>Alternative Financing Models</h3>
                         <p>Novel approaches to education financing include:</p>
                         
-                        <ul></ul>
+                        <ul>
                             <li>Income Share Agreements (ISAs), where students pledge a percentage of future income rather than taking traditional loans</li>
                             <li>The "free college" model implemented in various forms in more than 20 states</li>
                             <li>Employer-sponsored education benefits with direct payment to institutions</li>
@@ -1167,7 +1178,7 @@
                             <li>Potential to replace, rather than supplement, grant aid</li>
                         </ul>
                     </section>
-
+                        
                     <section id="accreditation-reform">
                         <h3>Accreditation Reform and Outcome Transparency</h3>
                         <p>Reforming the accreditation system has been proposed to create more meaningful quality assurance:</p>
@@ -1195,7 +1206,7 @@
                             <li>Reduce the ability of institutions to obscure poor performance</li>
                         </ul>
                     </section>
-                    
+                        
                     <div class="section-navigation">
                         <button class="prev-section"><i class="fas fa-arrow-left"></i> Previous Section</button>
                         <button class="next-section">Next Section <i class="fas fa-arrow-right"></i></button>
@@ -1225,7 +1236,7 @@
                             <li>Administrative costs are approximately 2.5% of loan value, compared to 16% for US federal loans</li>
                         </ul>
                     </section>
-
+                        
                     <section id="german-model">
                         <h3>The German Public Funding Model</h3>
                         <p>Germany briefly experimented with tuition fees in the early 2000s but eliminated them by 2014, returning to a primarily taxpayer-funded model:</p>
@@ -1246,7 +1257,7 @@
                             <li>Government expenditure per student is approximately 20% higher than the OECD average</li>
                         </ul>
                     </section>
-
+                        
                     <section id="english-model">
                         <h3>The English Income-Contingent System</h3>
                         <p>England (distinct from the UK as a whole) moved from free higher education to a high-tuition, high-loan model with income-contingent repayment:</p>
@@ -1267,7 +1278,7 @@
                             <li>The accounting treatment of expected non-repayment has created significant fiscal challenges</li>
                         </ul>
                     </section>
-
+                        
                     <section id="nordic-model">
                         <h3>The Nordic Model: Free Tuition with Targeted Living Support</h3>
                         <p>Nordic countries (Sweden, Norway, Denmark, Finland) offer another alternative approach:</p>
@@ -1288,14 +1299,14 @@
                             <li>Strong employment outcomes, partially due to coordination between higher education and labor market policies</li>
                         </ul>
                     </section>
-                    
-                    <div class="section-navigation"></div>
+                        
+                    <div class="section-navigation">
                         <button class="prev-section"><i class="fas fa-arrow-left"></i> Previous Section</button>
                         <button class="next-section">Next Section <i class="fas fa-arrow-right"></i></button>
                     </div>
                 </section>
 
-                <section id="part-xi"></section>
+                <section id="part-xi">
                     <h2>PART XI: CONCLUSION - THE PATH FORWARD</h2>
                     
                     <section id="reform-challenges">
@@ -1312,7 +1323,7 @@
                             <li><strong>Time inconsistency</strong>: The benefits of education are realized immediately, while the costs are pushed far into the future.</li>
                         </ol>
                     </section>
-
+                        
                     <section id="reform-elements">
                         <h3>Essential Reform Elements</h3>
                         <p>Based on the evidence examined in this analysis, any comprehensive solution must include these core elements:</p>
@@ -1325,7 +1336,7 @@
                             <li><strong>Targeted relief</strong>: Existing borrowers, especially those with unmanageable debt-to-income ratios or who were subjected to predatory practices, need pathways to relief.</li>
                         </ol>
                     </section>
-
+                        
                     <section id="longterm-vision">
                         <h3>The Long-Term Vision</h3>
                         <p>Beyond addressing immediate crises, transformative reform requires reconsidering fundamental questions about higher education financing:</p>
@@ -1337,7 +1348,7 @@
                             <li><strong>Educational quality vs. credential value</strong>: How can financing mechanisms prioritize actual learning and skill development over credentialing?</li>
                         </ol>
                     </section>
-
+                        
                     <section id="concluding-reflections">
                         <h3>Concluding Reflections</h3>
                         <p>The magnitude of outstanding student debt - approaching $1.75 trillion - means that solutions must both address the existing debt burden for current borrowers and create systemic changes to prevent the cycle from continuing for future generations. The economic and social consequences of failing to address this issue will extend far beyond individual borrowers to affect housing markets, retirement security, entrepreneurship, and social mobility for decades to come.</p>
@@ -1363,5 +1374,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/timeline.js"></script>
 </body>
 </html>

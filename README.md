@@ -57,3 +57,34 @@ This is a static website that can be deployed on any web hosting service:
 - Any traditional web hosting
 
 No build process is required - simply upload the files to your hosting provider.
+
+## Future Enhancements
+
+### Interactive Historical Timeline
+
+A planned enhancement is to add an interactive timeline visualizing the history of student loans in America:
+
+#### Proposed Features:
+- Chronological visualization spanning from 1940s to present day
+- Key markers for pivotal legislation, policy changes, and economic shifts
+- Ability to click/tap events to see details and jump to relevant essay sections
+- Toggle overlays showing:
+  - Tuition cost trends vs inflation
+  - Total student debt growth
+  - Average individual debt amounts
+  - Default rate changes
+  - College enrollment statistics
+
+#### Visual Elements:
+- Color-coded events by category (legislation, economic impacts, institutional changes)
+- Split-view option showing policy changes above and economic effects below
+- Zooming capability to focus on specific time periods
+- Interactive data points that reveal additional context when selected
+
+#### Technical Implementation:
+- JavaScript visualization libraries (Timeline.js, vis.js, or D3.js)
+- JSON data structure to store timeline events
+- Responsive design for desktop and mobile viewing
+- Optional filtering capability to highlight specific event types
+
+This feature would make the complex historical narrative more accessible and help readers visualize the cause-and-effect relationships between policies and outcomes.
