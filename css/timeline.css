@@ -51,11 +51,19 @@
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 4px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, opacity 0.2s;
 }
 
 .timeline-filters label:hover {
     background-color: var(--button-background);
+}
+
+.timeline-filters input:not(:checked) + .filter-color {
+    opacity: 0.4;
+}
+
+.timeline-filters label:has(input:not(:checked)) {
+    opacity: 0.7;
 }
 
 .filter-color {
@@ -82,6 +90,21 @@
     padding: 60px 0;
     overflow-x: auto;
     min-height: 400px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.timeline-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 .timeline-line {
@@ -118,6 +141,13 @@
     transform: translate(-50%, -50%);
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.timeline-event:hover, 
+.timeline-event.hover, 
+.timeline-event.active {
+    z-index: 10;
 }
 
 .event-marker {
@@ -129,6 +159,22 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0.2);
+}
+
+.timeline-event:hover .event-marker,
+.timeline-event.hover .event-marker,
+.timeline-event.active .event-marker {
+    transform: translate(-50%, -50%) scale(1.3);
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.1);
+}
+
+/* Hide events when their category is filtered out */
+.timeline-event {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .event-legislation .event-marker {
@@ -168,22 +214,34 @@
 }
 
 .timeline-event:hover .event-content,
+.timeline-event.hover .event-content,
 .timeline-event.active .event-content {
     opacity: 1;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
 }
 
+/* Ensure tooltips don't get cut off at screen edges */
+.timeline-event:hover .event-content,
+.timeline-event.hover .event-content {
+    max-width: min(250px, 80vw);
+    max-height: min(300px, 60vh);
+    overflow-y: auto;
+}
+
+/* Improve layout for content inside tooltips */
 .event-content h3 {
     font-size: 1rem;
     margin: 0 0 8px 0;
     padding: 0;
     border: none;
+    line-height: 1.3;
 }
 
 .event-content p {
     font-size: 0.9rem;
     margin: 0 0 10px;
+    line-height: 1.4;
 }
 
 .event-link {
@@ -218,11 +276,16 @@
     align-items: center;
     gap: 8px;
     margin: 0 auto;
-    transition: background-color 0.2s ease;
+    transition: transform 0.2s, background-color 0.2s;
 }
 
 .chart-toggle button:hover {
+    transform: translateY(-1px);
     opacity: 0.9;
+}
+
+.chart-toggle button:active {
+    transform: translateY(1px);
 }
 
 .chart-container {
@@ -261,12 +324,20 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background-color 0.2s ease;
+    transition: transform 0.2s, background-color 0.2s;
 }
 
 .chart-controls button.active {
     background-color: var(--link-color);
     color: #fff;
+}
+
+.chart-controls button:hover {
+    transform: translateY(-1px);
+}
+
+.chart-controls button:active {
+    transform: translateY(1px);
 }
 
 .chart-display {
@@ -304,7 +375,31 @@
         align-items: flex-start;
     }
     
-    .timeline-event .event-content {
-        width: 200px;
+    .timeline-event {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .event-marker {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .event-content {
+        width: 220px;
+    }
+    
+    .timeline-event.active .event-content {
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    .timeline-wrapper {
+        margin-left: -15px;
+        margin-right: -15px;
+        padding-left: 15px;
+        padding-right: 15px;
+        width: calc(100% + 30px);
     }
 }

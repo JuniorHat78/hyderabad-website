@@ -58,15 +58,15 @@ class StudentDebtTimeline {
             <h2>Interactive Student Debt Timeline</h2>
             <div class="timeline-filters">
                 <label>
-                    <input type="checkbox" data-filter="legislation" checked> 
+                    <input type="checkbox" data-filter="legislation" ${this.activeFilters.legislation ? 'checked' : ''}> 
                     <span class="filter-color legislation"></span> Policy & Legislation
                 </label>
                 <label>
-                    <input type="checkbox" data-filter="economic" checked> 
+                    <input type="checkbox" data-filter="economic" ${this.activeFilters.economic ? 'checked' : ''}> 
                     <span class="filter-color economic"></span> Economic Impacts
                 </label>
                 <label>
-                    <input type="checkbox" data-filter="institutional" checked> 
+                    <input type="checkbox" data-filter="institutional" ${this.activeFilters.institutional ? 'checked' : ''}> 
                     <span class="filter-color institutional"></span> Institutional Changes
                 </label>
             </div>
@@ -94,11 +94,26 @@ class StudentDebtTimeline {
             timelineEl.appendChild(marker);
         }
         
+        // First calculate how many events will be above/below to better distribute them
+        let eventsToShow = this.events.filter(event => this.activeFilters[event.type]);
+        let aboveCount = 0;
+        let belowCount = 0;
+        
+        // Pre-determine positions to avoid overlapping
+        eventsToShow.forEach((event, index) => {
+            // Alternate more intelligently based on index
+            if (index % 2 === 0) {
+                aboveCount++;
+            } else {
+                belowCount++;
+            }
+        });
+        
         // Add events to timeline
-        this.events.forEach(event => {
-            // Skip if event type is filtered out
-            if (!this.activeFilters[event.type]) return;
-            
+        let currentAbove = 0;
+        let currentBelow = 0;
+        
+        eventsToShow.forEach((event, index) => {
             const eventEl = document.createElement('div');
             eventEl.className = `timeline-event event-${event.type}`;
             eventEl.setAttribute('data-year', event.year);
@@ -108,8 +123,30 @@ class StudentDebtTimeline {
             const position = this.calculatePosition(event.year);
             eventEl.style.left = `${position}%`;
             
-            // Alternate events above and below the line to avoid overlapping
-            eventEl.classList.add(position % 20 < 10 ? 'event-top' : 'event-bottom');
+            // More intelligent positioning to avoid overlaps
+            let isTop = index % 2 === 0;
+            
+            // Use data attribute for position so we can style based on this
+            if (isTop) {
+                eventEl.classList.add('event-top');
+                currentAbove++;
+            } else {
+                eventEl.classList.add('event-bottom');
+                currentBelow++;
+            }
+            
+            // Add staggered heights for events that would otherwise overlap
+            if (index > 0) {
+                const prevEvent = eventsToShow[index - 1];
+                const prevPosition = this.calculatePosition(prevEvent.year);
+                if (Math.abs(position - prevPosition) < 5) {
+                    if (isTop) {
+                        eventEl.style.height = `${30 + (currentAbove % 3) * 10}px`;
+                    } else {
+                        eventEl.style.height = `${30 + (currentBelow % 3) * 10}px`;
+                    }
+                }
+            }
             
             eventEl.innerHTML = `
                 <div class="event-marker"></div>
@@ -153,6 +190,44 @@ class StudentDebtTimeline {
             </div>
         `;
         this.container.appendChild(chartContainer);
+        
+        // Reattach event listeners after rendering
+        this.setupEventListeners();
+        
+        // Adjust tooltip positions to ensure they're visible
+        this.adjustTooltipPositions();
+    }
+
+    adjustTooltipPositions() {
+        // Find all event tooltips and ensure they're visible within the viewport
+        setTimeout(() => {
+            const eventContents = this.container.querySelectorAll('.event-content');
+            eventContents.forEach(content => {
+                const rect = content.getBoundingClientRect();
+                const parentEvent = content.closest('.timeline-event');
+                
+                // Check if the tooltip would go off the top of the viewport
+                if (rect.top < 0) {
+                    content.style.bottom = 'auto';
+                    content.style.top = '25px';
+                    if (parentEvent) parentEvent.classList.remove('event-top');
+                    if (parentEvent) parentEvent.classList.add('event-bottom');
+                }
+                
+                // Check if the tooltip would go off the left side
+                if (rect.left < 0) {
+                    content.style.transform = 'translateY(0)';
+                    content.style.left = '0';
+                }
+                
+                // Check if the tooltip would go off the right side
+                if (rect.right > window.innerWidth) {
+                    content.style.transform = 'translateY(0)';
+                    content.style.right = '0';
+                    content.style.left = 'auto';
+                }
+            });
+        }, 100);
     }
 
     setupEventListeners() {
@@ -169,6 +244,19 @@ class StudentDebtTimeline {
         // Event click listeners
         const events = this.container.querySelectorAll('.timeline-event');
         events.forEach(event => {
+            // Add hover handler for better mobile experience
+            event.addEventListener('mouseenter', () => {
+                this.container.querySelectorAll('.timeline-event').forEach(e => {
+                    e.classList.remove('hover');
+                });
+                event.classList.add('hover');
+            });
+            
+            event.addEventListener('mouseleave', () => {
+                event.classList.remove('hover');
+            });
+            
+            // Click handler
             event.addEventListener('click', () => {
                 const eventId = event.getAttribute('data-event-id');
                 this.showEventDetails(eventId);
@@ -214,8 +302,20 @@ class StudentDebtTimeline {
         if (selectedEvent) {
             selectedEvent.classList.add('active');
             
-            // Scroll the event into view if needed
-            selectedEvent.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            // Ensure the event is centered in the viewport horizontally
+            const timelineWrapper = this.container.querySelector('.timeline-wrapper');
+            if (timelineWrapper) {
+                const timelineRect = timelineWrapper.getBoundingClientRect();
+                const eventRect = selectedEvent.getBoundingClientRect();
+                
+                // Calculate how far to scroll to center the event
+                const scrollLeft = eventRect.left - timelineRect.left - (timelineRect.width / 2) + (eventRect.width / 2);
+                
+                timelineWrapper.scrollTo({
+                    left: timelineWrapper.scrollLeft + scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
         }
         
         // If there's an essay link, scroll to that section
