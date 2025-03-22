@@ -324,11 +324,11 @@ class StudentDebtTimeline {
             });
         });
 
-        // Completely redesigned full-screen toggle functionality
+        // Fix fullscreen button functionality
         const fullscreenBtn = this.container.querySelector('#timelineFullscreen');
         if (fullscreenBtn) {
             fullscreenBtn.addEventListener('click', () => {
-                // Create a dedicated full-screen container outside the normal DOM flow
+                // Create fullscreen container
                 const fullscreenContainer = document.createElement('div');
                 fullscreenContainer.className = 'timeline-fullscreen-container';
                 fullscreenContainer.innerHTML = `
@@ -344,19 +344,53 @@ class StudentDebtTimeline {
                 document.body.appendChild(fullscreenContainer);
                 document.body.classList.add('timeline-modal-open');
                 
-                // Create a new instance of the timeline just for the full-screen view
-                const fullscreenTimeline = new StudentDebtTimeline({
-                    containerId: 'fullscreenTimelineContent',
-                    dataUrl: this.dataUrl
-                });
-                
+                // Add a delay to ensure the container is in the DOM before initializing the timeline
+                setTimeout(() => {
+                    // Create a new instance of the timeline for fullscreen
+                    const fullscreenTimeline = new StudentDebtTimeline({
+                        containerId: 'fullscreenTimelineContent',
+                        dataUrl: this.dataUrl
+                    });
+
+                    // Force a repaint to ensure visibility
+                    const fullscreenContent = document.getElementById('fullscreenTimelineContent');
+                    fullscreenContent.style.opacity = '0.99';
+                    setTimeout(() => {
+                        fullscreenContent.style.opacity = '1';
+                        
+                        // Add event listeners for "Read more" links
+                        const readMoreLinks = fullscreenContent.querySelectorAll('.event-link');
+                        readMoreLinks.forEach(link => {
+                            link.addEventListener('click', (e) => {
+                                // Prevent default anchor behavior
+                                e.preventDefault();
+                                
+                                // Get the target section ID
+                                const targetId = link.getAttribute('href').substring(1);
+                                
+                                // Close the fullscreen modal
+                                document.body.removeChild(fullscreenContainer);
+                                document.body.classList.remove('timeline-modal-open');
+                                
+                                // After a short delay to allow the modal to close, scroll to the target section
+                                setTimeout(() => {
+                                    const targetSection = document.getElementById(targetId);
+                                    if (targetSection) {
+                                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    }
+                                }, 100);
+                            });
+                        });
+                    }, 50);
+                }, 100);
+
                 // Setup exit button
                 const exitBtn = fullscreenContainer.querySelector('.timeline-exit-btn');
                 exitBtn.addEventListener('click', () => {
                     document.body.removeChild(fullscreenContainer);
                     document.body.classList.remove('timeline-modal-open');
                 });
-                
+
                 // Handle Escape key
                 const handleEscKey = (e) => {
                     if (e.key === 'Escape') {
@@ -365,7 +399,6 @@ class StudentDebtTimeline {
                         document.removeEventListener('keydown', handleEscKey);
                     }
                 };
-                
                 document.addEventListener('keydown', handleEscKey);
             });
         }
