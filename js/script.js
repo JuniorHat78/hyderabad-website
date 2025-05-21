@@ -106,52 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
-    // Citation tooltips
-    document.querySelectorAll('blockquote cite').forEach(citation => {
-        citation.setAttribute('title', 'Click to see full citation information');
-        citation.style.cursor = 'pointer';
-        
-        citation.addEventListener('click', function() {
-            // In a real implementation, this would show a modal with citation details
-            alert('Full citation information would appear here.');
-        });
-    });
-    
     // Update current section in header
     updateCurrentSection();
     
     // Setup section navigation
     setupSectionNavigation();
-
-    // Initialize timeline if the container exists
-    if (document.getElementById('timelineContainer')) {
-        try {
-            // Create new timeline instance
-            window.mainTimeline = new StudentDebtTimeline({
-                containerId: 'timelineContainer',
-                dataUrl: 'js/timeline-data.json'
-            });
-            console.log("Timeline initialized successfully");
-        } catch (error) {
-            console.error("Failed to initialize timeline:", error);
-            document.getElementById('timelineContainer').innerHTML = 
-                '<div class="timeline-error"><h3>Timeline Error</h3><p>There was a problem loading the timeline. Please refresh the page to try again.</p></div>';
-        }
-    } else {
-        console.warn("Timeline container not found in the DOM");
-    }
-
-    // Also initialize any fullscreen timeline content if it exists
-    if (document.getElementById('fullscreenTimelineContent')) {
-        try {
-            new StudentDebtTimeline({
-                containerId: 'fullscreenTimelineContent',
-                dataUrl: 'js/timeline-data.json'
-            });
-        } catch (error) {
-            console.error("Failed to initialize fullscreen timeline:", error);
-        }
-    }
 });
 
 // Function to update the current section title in the header
@@ -187,7 +146,7 @@ function updateCurrentSection() {
 
 // Function to handle section navigation
 function setupSectionNavigation() {
-    const mainSections = Array.from(document.querySelectorAll('section[id^="part-"], section[id="introduction"]'));
+    const mainSections = Array.from(document.querySelectorAll('section[id^="pharma-"], section[id^="mechanics-"], section[id^="matthew-"], section[id^="irreplaceability"], section[id^="hyderabad-"], section[id^="talent-"], section[id^="multidisciplinary"], section[id^="threshold-"], section[id="introduction"], section[id="conclusion"]'));
     const navButtons = document.querySelectorAll('.section-navigation');
     
     navButtons.forEach((navButton, index) => {
